@@ -1,0 +1,70 @@
+@model IEnumerable<PedidoModel>
+@{
+    ViewBag.Subtitulo = "Página Principal";
+}
+
+<h1 class="text-primary">ASTROMAZE | <b>EstoqueWeb </b></h1>
+<hr>
+<p>Gerenciamento de estoque dos Robôs da ASTROMAZE</p>
+<hr>
+<p>Caminhos Para Consultar APIs:</p>
+
+    <p><B>CLIENTES</B></p>
+    <ul>
+    <li>Consultar Clientes com ID 👉 api/Clientes</li>
+    <li>Excluir Pela API com ID  👉 api/Clientes/ExcluirAPI/id</li>
+    </ul>
+    <p><B>CATEGORIAS</B></p>
+    <ul>
+    <li>Consultar Categorias com ID 👉 api/Categorias</li>
+    <li>Excluir Pela API com ID  👉 api/Categorias/ExcluirAPI/id</li>
+    </ul>
+    <p><B>PRODUTOS</B></p>
+    <ul>
+    <li>Consultar Produtos com ID 👉 api/Produtos</li>
+    <li>Excluir Pela API com ID  👉 api/Produtos/ExcluirAPI/id</li>
+    </ul>
+    <br />
+    <p><b>OBSERVAÇÃO: ExcluirAPI exclui diretamente sem confirmação!</b></p>
+
+<hr>
+<p>Voltar ao Site 👉 <a href="https://astromaze.paginaoficial.ws/">SITE</a></p>
+<hr>
+
+
+<partial name="_Mensagem"></partial>
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped tabela-abertos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Cliente</th>
+                <th>Valor Total</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in Model)
+            {
+                <tr>
+                    <td>@pedido.IdPedido.ToString("D4")</td>
+                    <td>@pedido.Cliente.Nome</td>
+                    <td>@pedido.ValorTotal.Value.ToString("C")</td>
+                    <td>
+                        <a asp-action="Fechar" asp-route-id="@pedido.IdPedido" asp-controller="Pedido" class="btn btn-sm btn-success"><i class="bi-check-lg" title="Fechar pedido"></i></a>
+
+                        <a asp-action="Index" asp-controller="ItemPedido" asp-route-ped="@pedido.IdPedido" class="btn btn-sm btn-info"><i class="bi-list-check" title="Itens do pedido"></i></a>
+
+                        <a asp-action="Excluir" asp-route-id="@pedido.IdPedido" asp-controller="Pedido" class="btn btn-sm btn-danger"><i class="bi-trash" title="Excluir pedido"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Não há nenhum pedido em aberto no momento.</p>
+}
